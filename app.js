@@ -1,11 +1,5 @@
-// Function to start a new round
-// Get a random computer choice
-// Get player input
-// Keep player and computer scores
-// Display result
-
-let playerScore = 0;
-let computerScore = 0;
+let playerScore;
+let computerScore;
 
 function PlayGame(){
     // reset scores
@@ -20,17 +14,14 @@ function PlayGame(){
         PlayRound();
         roundCounter++;
     }
-    alert("Game over! Winner: " + (playerScore > computerScore ? "Player" : (playerScore < computerScore) ? "Computer" : "Draw"));
+    alert("Game over! Result: " + (playerScore > computerScore ? "Player Wins" : (playerScore < computerScore) ? "Computer Wins" : "Draw"));
 }
 
 function PlayRound(){
-    let input = prompt("Enter your choice (rock/paper/scissors): ");
-
-    input = input.toLowerCase();
+    let input = prompt("Enter your choice (rock/paper/scissors): ").toLowerCase();
 
     while(input !== "rock" && input !== "paper" && input !== "scissors"){
-        input = prompt("Invalid choice. Try again (enter rock/paper/scissors): ");
-        input = input.toLowerCase();
+        input = prompt("Invalid choice. Try again (enter rock/paper/scissors): ").toLowerCase();
     }
 
     NewRound(input);
@@ -52,7 +43,6 @@ function GetComputerChoice(){
     }
 }
 
-// takes two inputs, returns 1 if computer won, returns 2 if player2 won, returns 0 if draw
 function NewRound(playerChoice){
     let computerChoice = GetComputerChoice();
     alert("Player picks: " + playerChoice + "\nComputer picks: " + computerChoice);
