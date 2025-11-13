@@ -1,7 +1,7 @@
 let playerScore;
 let computerScore;
 
-function PlayGame(){
+function playGame(){
     // reset scores
     playerScore = 0;
     computerScore = 0;
@@ -11,23 +11,23 @@ function PlayGame(){
     // Play until the rounds are over, keep going if the scores are equal until there's a winner
     while(roundCounter <= maxRounds){
         alert(roundCounter == maxRounds ? "Final Round" : ("Round: " +roundCounter));
-        PlayRound();
+        playRound();
         roundCounter++;
     }
     alert("Game over! Result: " + (playerScore > computerScore ? "Player Wins" : (playerScore < computerScore) ? "Computer Wins" : "Draw"));
 }
 
-function PlayRound(){
+function playRound(){
     let input = prompt("Enter your choice (rock/paper/scissors): ").toLowerCase();
 
     while(input !== "rock" && input !== "paper" && input !== "scissors"){
         input = prompt("Invalid choice. Try again (enter rock/paper/scissors): ").toLowerCase();
     }
 
-    NewRound(input);
+    newRound(input);
 }
 
-function GetComputerChoice(){
+function getComputerChoice(){
     let randomChoice = Math.floor((Math.random()*3)); // random between 0, 1 and 2
 
     switch(randomChoice){
@@ -43,42 +43,42 @@ function GetComputerChoice(){
     }
 }
 
-function NewRound(playerChoice){
-    let computerChoice = GetComputerChoice();
+function newRound(playerChoice){
+    let computerChoice = getComputerChoice();
     alert("Player picks: " + playerChoice + "\nComputer picks: " + computerChoice);
 
     if(computerChoice === playerChoice){
-        UpdateResult("draw");
+        updateResult("draw");
     }
     else if(computerChoice === "rock"){
         if(playerChoice === "scissors"){
-            UpdateResult("computer");
+            updateResult("computer");
         }
         else{
-            UpdateResult("player");
+            updateResult("player");
         }
     }
     else if(computerChoice === "paper"){
         if(playerChoice === "rock"){
-            UpdateResult("computer");
+            updateResult("computer");
         }
         else{
-            UpdateResult("player");
+            updateResult("player");
         }
     }
     else if(computerChoice === "scissors"){
         if(playerChoice === "rock"){
-            UpdateResult("player");
+            updateResult("player");
         }
         else{
-            UpdateResult("computer");
+            updateResult("computer");
         }
     }
     else {
         console.error("Invalid choice!");
     }
 
-    function UpdateResult(winner){
+    function updateResult(winner){
         if(winner === "draw"){
             alert("Draw" + "\n\nNew score:\n" + "Player: " + playerScore + "\nComputer: " + computerScore);
             return;
