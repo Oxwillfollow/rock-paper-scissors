@@ -30,7 +30,7 @@ function playGame(){
     buttonRock.id = "rock";
     buttonPaper.id = "paper";
     buttonScissors.id = "scissors";
-    buttons.textContent = "Choose! "
+    gameContentDiv.textContent = "First to 5. Choose below"
     buttons.appendChild(buttonRock);
     buttons.appendChild(buttonPaper);
     buttons.appendChild(buttonScissors);
