@@ -1,27 +1,59 @@
 let playerScore;
 let computerScore;
+let roundCounter = 1;
+let maxScore = 5;
+
+const newgameButton = document.getElementById("button-newgame");
+const resultsDiv = document.getElementById("results");
+const gameContentDiv = document.getElementById("game-content");
+
+newgameButton.addEventListener("click", playGame);
 
 function playGame(){
     // reset scores
+    clearResults();
+    clearGameContent();
+    newgameButton.hidden = true;
     playerScore = 0;
     computerScore = 0;
-    let roundCounter = 1;
-    let maxRounds = 5;
+    roundCounter = 1;
+    maxScore = 5;
 
-    // Play until the rounds are over, keep going if the scores are equal until there's a winner
-    while(roundCounter <= maxRounds){
-        alert(roundCounter == maxRounds ? "Final Round" : ("Round: " +roundCounter));
-        playRound();
-        roundCounter++;
-    }
-    alert("Game over! Result: " + (playerScore > computerScore ? "Player Wins" : (playerScore < computerScore) ? "Computer Wins" : "Draw"));
+    const buttons = document.createElement("div");
+    const buttonRock = document.createElement("button");
+    const buttonPaper = document.createElement("button");
+    const buttonScissors = document.createElement("button");
+
+    buttonRock.textContent = "Rock";
+    buttonPaper.textContent = "Paper";
+    buttonScissors.textContent = "Scissors";
+    buttonRock.id = "rock";
+    buttonPaper.id = "paper";
+    buttonScissors.id = "scissors";
+    buttons.textContent = "Choose! "
+    buttons.appendChild(buttonRock);
+    buttons.appendChild(buttonPaper);
+    buttons.appendChild(buttonScissors);
+    gameContentDiv.appendChild(buttons);
+
+    buttons.addEventListener("click", playRound);
 }
 
-function playRound(){
-    let input = prompt("Enter your choice (rock/paper/scissors): ").toLowerCase();
+function playRound(event){
+    let input = "";
 
-    while(input !== "rock" && input !== "paper" && input !== "scissors"){
-        input = prompt("Invalid choice. Try again (enter rock/paper/scissors): ").toLowerCase();
+    if(event.target.id === "rock"){
+        input = "rock";
+    }
+    else if(event.target.id === "paper"){
+        input = "paper";
+    }
+    else if(event.target.id === "scissors"){
+        input = "scissors";
+    }
+    else{
+        alert("ERROR! Wrong input");
+        return;
     }
 
     newRound(input);
@@ -44,8 +76,17 @@ function getComputerChoice(){
 }
 
 function newRound(playerChoice){
+    clearResults();
+    const resultsPara = document.createElement("p");
+    resultsDiv.appendChild(resultsPara);
+    
+    const roundText = document.createTextNode(`Round: ${roundCounter}\n`);
+    resultsPara.appendChild(roundText);
+
     let computerChoice = getComputerChoice();
-    alert("Player picks: " + playerChoice + "\nComputer picks: " + computerChoice);
+    const choicePara = document.createElement("p");
+    choicePara.textContent = `[-- Player chooses: ${playerChoice} --] [-- Computer chooses: ${computerChoice} --]`;
+    resultsDiv.appendChild(choicePara);
 
     if(computerChoice === playerChoice){
         updateResult("draw");
@@ -78,20 +119,46 @@ function newRound(playerChoice){
         console.error("Invalid choice!");
     }
 
-    function updateResult(winner){
-        if(winner === "draw"){
-            alert("Draw" + "\n\nNew score:\n" + "Player: " + playerScore + "\nComputer: " + computerScore);
-            return;
-        }
-        else if(winner === "computer"){
-            computerScore++;
-        }
-        else if(winner === "player"){
-            playerScore++;
-        }
-        else
-            console.error("Invalid result!");
+    roundCounter++;
+}
 
-        alert("Round winner: " + winner + "\n\nNew score:\n" + "Player: " + playerScore + "\nComputer: " + computerScore);
+function updateResult(winner){
+    const resultsPara = document.createElement("p");
+
+    if(winner === "draw"){
+        resultsPara.textContent = "Draw";
+    }
+    else if(winner === "computer"){
+        computerScore++;
+        resultsPara.textContent = "Computer wins";
+    }
+    else if(winner === "player"){
+        playerScore++;
+        resultsPara.textContent = "Player wins";
+    }
+    else
+        console.error("Invalid result!");
+
+    resultsPara.innerHTML += `<br/><br/>New Score:<br/>Player: ${playerScore}<br/>Computer: ${computerScore}`;
+    resultsDiv.appendChild(resultsPara);
+
+    if(playerScore >= maxScore || computerScore >= maxScore){
+        const gameoverPara = document.createElement("p");
+        resultsDiv.appendChild(gameoverPara);
+        gameoverPara.textContent = `Game over! ${playerScore > computerScore ? "Player Wins!" : "Computer Wins!"}`;
+        clearGameContent();
+        newgameButton.hidden = false;
+    }
+}
+
+function clearResults(){
+    while (resultsDiv.firstChild) {
+        resultsDiv.removeChild(resultsDiv.firstChild);
+    }
+}
+
+function clearGameContent(){
+    while (gameContentDiv.firstChild) {
+        gameContentDiv.removeChild(gameContentDiv.firstChild);
     }
 }
